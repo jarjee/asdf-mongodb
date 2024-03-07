@@ -10,3 +10,7 @@ insert_final_newline = true
 [*.{md,yml,yaml}]
 indent_style = space
 indent_size = 2
+
+# Ignore the m in the library for shfmt (shfmt has some _interesting_ politics about ignoring files)
+[lib/m]
+ignore = true
