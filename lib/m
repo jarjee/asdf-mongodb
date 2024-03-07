@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# shellcheck disable=all
+# Copied from hash 95a0a7faa9c0e23e05148b20d2906281ac85cebd of https://github.com/aheckmann/m
 
 ### Configuration
 
