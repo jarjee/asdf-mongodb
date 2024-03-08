@@ -1,3 +1,8 @@
 {
-  "image": "ubuntu:22.04"
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "mounts": [
+    "source=asdf-mongodb-home,target=/home/root,type=volume,consistency=cached"
+  ]
 }
