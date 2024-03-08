@@ -25,7 +25,7 @@ list_all_versions() {
 }
 
 list_stable_version() {
-  "$util_dir/m" --stable
+	"$util_dir/m" --stable
 }
 
 download_release() {
