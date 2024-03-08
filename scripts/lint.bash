@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2046
 
 shellcheck --shell=bash --external-sources \
 	bin/* --source-path=template/lib/ \
