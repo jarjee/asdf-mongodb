@@ -34,10 +34,10 @@ download_release() {
 	filename="$2"
 
 	# TODO: Adapt the release URL convention for mongodb
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	# url="$GH_REPO/archive/v${version}.tar.gz"
 
-	echo "* Downloading $TOOL_NAME release $version..."
-	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+	# echo "* Downloading $TOOL_NAME release $version..."
+	# curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
 install_version() {
