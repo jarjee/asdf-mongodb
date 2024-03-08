@@ -3,6 +3,6 @@
     "dockerfile": "Dockerfile"
   },
   "mounts": [
-    "source=asdf-mongodb-home,target=/home/root,type=volume,consistency=cached"
+    "source=asdf-mongodb-home,target=/root,type=volume,consistency=cached"
   ]
 }
