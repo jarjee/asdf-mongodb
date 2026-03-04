@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "MongoDB downloads: https://www.mongodb.com/try/download/community"
+echo "Release notes:     https://www.mongodb.com/docs/manual/release-notes/"
+echo "m (version mgr):   https://github.com/aheckmann/m"
+echo "This plugin:       https://github.com/jarjee/asdf-mongodb"
