@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "MongoDB server (mongod), router (mongos), and CLI tools."
+echo "Backed by aheckmann/m — the MongoDB version manager."

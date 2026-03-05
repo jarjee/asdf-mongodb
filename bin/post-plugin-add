@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "asdf-mongodb: run 'asdf install mongodb latest' to install the latest stable release."
+echo "             run 'asdf list-all mongodb' to see all available versions."
