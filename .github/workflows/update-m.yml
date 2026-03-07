@@ -1,0 +1,75 @@
+name: Update M Script
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Every Monday at 08:00 UTC
+  workflow_dispatch: # Allow manual runs
+
+jobs:
+  update-m:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get current M script commit hash
+        id: current
+        run: |
+          hash=$(grep -m1 'Copied from hash' lib/m | sed 's/.*hash \([0-9a-f]*\).*/\1/')
+          echo "hash=$hash" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest upstream commit hash
+        id: latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          hash=$(gh api repos/aheckmann/m/commits/master --jq '.sha')
+          echo "hash=$hash" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if already up to date
+        if: steps.current.outputs.hash == steps.latest.outputs.hash
+        run: |
+          echo "lib/m is already at ${{ steps.latest.outputs.hash }} — nothing to do."
+
+      - name: Run update script
+        if: steps.current.outputs.hash != steps.latest.outputs.hash
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/update-m.bash
+
+      - name: Create or update PR
+        if: steps.current.outputs.hash != steps.latest.outputs.hash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="update/m-script"
+          NEW_HASH="${{ steps.latest.outputs.hash }}"
+          SHORT="${NEW_HASH:0:8}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -B "$BRANCH"
+          git add lib/m
+          git commit -m "chore: update lib/m to upstream $SHORT"
+          git push -f origin "$BRANCH"
+
+          PR_URL=$(gh pr list \
+            --head "$BRANCH" \
+            --base main \
+            --state open \
+            --json url \
+            --jq '.[0].url')
+
+          if [ -n "$PR_URL" ]; then
+            echo "Existing PR updated: $PR_URL"
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore: update lib/m to upstream $SHORT" \
+              --body "Automated weekly update of \`lib/m\` to the latest commit on [aheckmann/m](https://github.com/aheckmann/m) (\`${NEW_HASH}\`)."
+          fi
